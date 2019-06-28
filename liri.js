@@ -1,5 +1,6 @@
 require("dotenv").config();
 var axios = require("axios");
+var moment = require('moment');
 // var keys = require("./keys.js");
 // var spotify = new Spotify(keys.spotify);
 // var userParm = process.argv.splice(2, process.argv.length - 1); //! needs .trim() ???
@@ -35,27 +36,28 @@ switch(action) {
 
 //*   FUNCTIONS
 function concertThis(value) {
-   var artist = value;
-   console.log('value is '+artist);
+   axios.get("https://rest.bandsintown.com/artists/" + value + "/events?app_id=codingbootcamp")
+      .then(function (response) {
+         var venueName = response.data[0].venue.name
+         var location = response.data[0].venue.city+", " + response.data[0].venue.region;
+         var date = moment(response.data[0].datetime).format("MM/DD/YYYY");
 
-   axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
-      function (response) {
-         console.log(response);
-         // console.log(response.venue.city+", "+response.venue.region);
+         console.log("Venue Name: "+venueName);
+         console.log("Location: "+location);
+         console.log("Next Event: "+date);
       })
       .catch(function (error) {
          if (error.response) {
-            console.log("---------------Data---------------");
             console.log(error.response.data);
-            console.log("---------------Status---------------");
             console.log(error.response.status);
-            console.log("---------------Status---------------");
             console.log(error.response.headers);
-         } else if (error.request) {console.log(error.request);
-         } else {console.log("Error", error.message);}
+         } else if (error.request) {
+            console.log(error.request);
+         } else {
+            console.log("Error", error.message);
+         }
          console.log(error.config);
       });
-
 }
 
 function spotifyThisSong(value) {
