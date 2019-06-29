@@ -5,10 +5,10 @@ var Spotify = require('node-spotify-api');
 var fs = require("fs")
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
-// var userParm = process.argv.splice(2, process.argv.length - 1); //! needs .trim() ???
 var action = process.argv[2];
 var value = process.argv[3];
 
+// Check typed action against cases, if matched direct to proper function, else console log an error
 switch(action) {
    case "concert-this":
       console.log('***Command -> Concert This');
@@ -44,21 +44,14 @@ function concertThis(value) {
          var location = response.data[0].venue.city+", " + response.data[0].venue.region;
          var date = moment(response.data[0].datetime).format("MM/DD/YYYY");
 
+         console.log("---------------------------------------------------------");
          console.log("Venue Name: "+venueName);
          console.log("Location: "+location);
          console.log("Next Event: "+date);
       })
+      // Catch any errors
       .catch(function (error) {
-         if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-         } else if (error.request) {
-            console.log(error.request);
-         } else {
-            console.log("Error", error.message);
-         }
-         console.log(error.config);
+         errorCheck(error)
       });
 }
 
@@ -74,23 +67,16 @@ function spotifyThisSong(value) {
             var prevLink = response.external_urls.spotify;
             var album = response.album.name;
 
+            console.log('---------------------------------------------------------');
             console.log('Artist(s): ' + artists);
             console.log('Song Name: ' + songName);
             console.log('Song Link: ' + prevLink);
             console.log('Album: ' + album);
 
          })
+         // Catch any errors
          .catch(function (error) {
-            if (error.response) {
-               console.log(error.response.data);
-               console.log(error.response.status);
-               console.log(error.response.headers);
-            } else if (error.request) {
-               console.log(error.request);
-            } else {
-               console.log("Error", error.message);
-            }
-            console.log(error.config);
+            errorCheck(error)
          });
    } else {
    spotify
@@ -101,36 +87,31 @@ function spotifyThisSong(value) {
          var prevLink = response.tracks.items[0].external_urls.spotify;
          var album = response.tracks.items[0].album.name;
 
+         console.log('---------------------------------------------------------');
          console.log('Artist(s): '+artists);
          console.log('Song Name: '+songName);
          console.log('Song Link: '+prevLink);
          console.log('Album: '+album);
          
       })
+      // Catch any errors
       .catch(function (error) {
-         if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-         } else if (error.request) {
-            console.log(error.request);
-         } else {
-            console.log("Error", error.message);
-         }
-         console.log(error.config);
+         errorCheck(error)
       });
    }
 }
 
 function movieThis(value) {
+   logthis();
    if (!value) { movie = "Mr. Nobody"; }
    else { movie = value; }
    
    var movie;
-   var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
+   var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=1trilogy";
 
    axios.get(queryUrl).then(
       function (response) {
+         console.log("---------------------------------------------------------");
          console.log("Title: " + response.data.Title);
          console.log("Year: " + response.data.Year);
          console.log("IMDB Rating: " + response.data.Ratings[0].Value);
@@ -140,22 +121,15 @@ function movieThis(value) {
          console.log("Plot: " + response.data.Plot);
          console.log("Actors: " + response.data.Actors);
       })
+      // Catch any errors
       .catch(function (error) {
-         if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-         } else if (error.request) {
-            console.log(error.request);
-         } else {
-            console.log("Error", error.message);
-         }
-         console.log(error.config);
+         errorCheck(error)
       });
 }
 
 function doWhatItSays(value) {
    fs.readFile("random.txt", "utf8", function (error, data) {
+      // Catch any errors
       if (error) {
          return console.log(error);
       }
@@ -163,7 +137,7 @@ function doWhatItSays(value) {
       console.log(data);
       var dataArr = data.split(",");
       console.log(dataArr);
-
+      // grab action and value from array
       var action = dataArr[0];
       var value = dataArr[1];
 
@@ -193,4 +167,32 @@ function doWhatItSays(value) {
             console.log('command used -> ' + action);
       }
    });
+}
+
+function errorCheck(error) {
+   if (error.response) {
+      console.log("---------------Data---------------");
+      console.log(error.response.data);
+      console.log("---------------Status---------------");
+      console.log(error.response.status);
+      console.log("---------------Status---------------");
+      console.log(error.response.headers);
+   } else if (error.request) {
+      console.log(error.request);
+   } else {
+      console.log("Error", error.message);
+   }
+   console.log(error.config);
+}
+
+function logthis() {
+   var trueLog = console.log;
+   console.log = function (msg) {
+      fs.appendFile("log.txt", msg + "\n", function (err) {
+         if (err) {
+            return trueLog(err);
+         }
+      });
+      trueLog(msg); //comment this out if you don't want logs to show in console
+   }
 }
