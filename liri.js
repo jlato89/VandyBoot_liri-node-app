@@ -44,7 +44,6 @@ function concertThis(value) {
          var location = response.data[0].venue.city+", " + response.data[0].venue.region;
          var date = moment(response.data[0].datetime).format("MM/DD/YYYY");
 
-         console.log("---------------------------------------------------------");
          console.log("Venue Name: "+venueName);
          console.log("Location: "+location);
          console.log("Next Event: "+date);
@@ -67,7 +66,6 @@ function spotifyThisSong(value) {
             var prevLink = response.external_urls.spotify;
             var album = response.album.name;
 
-            console.log('---------------------------------------------------------');
             console.log('Artist(s): ' + artists);
             console.log('Song Name: ' + songName);
             console.log('Song Link: ' + prevLink);
@@ -87,7 +85,6 @@ function spotifyThisSong(value) {
          var prevLink = response.tracks.items[0].external_urls.spotify;
          var album = response.tracks.items[0].album.name;
 
-         console.log('---------------------------------------------------------');
          console.log('Artist(s): '+artists);
          console.log('Song Name: '+songName);
          console.log('Song Link: '+prevLink);
@@ -107,11 +104,10 @@ function movieThis(value) {
    else { movie = value; }
    
    var movie;
-   var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=1trilogy";
+   var queryUrl = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
 
    axios.get(queryUrl).then(
       function (response) {
-         console.log("---------------------------------------------------------");
          console.log("Title: " + response.data.Title);
          console.log("Year: " + response.data.Year);
          console.log("IMDB Rating: " + response.data.Ratings[0].Value);
@@ -171,7 +167,7 @@ function doWhatItSays(value) {
 
 function errorCheck(error) {
    if (error.response) {
-      console.log("---------------Data---------------");
+      console.log("----------------Data----------------");
       console.log(error.response.data);
       console.log("---------------Status---------------");
       console.log(error.response.status);
@@ -188,11 +184,12 @@ function errorCheck(error) {
 function logthis() {
    var trueLog = console.log;
    console.log = function (msg) {
-      fs.appendFile("log.txt", msg + "\n", function (err) {
+      fs.appendFile("log.txt", JSON.stringify(msg) + "\n", function (err) {
          if (err) {
             return trueLog(err);
          }
       });
-      trueLog(msg); //comment this out if you don't want logs to show in console
+      trueLog(msg); //comment this out if you don't want logs to show in the console
    }
+   console.log("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
 }
