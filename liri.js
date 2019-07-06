@@ -38,6 +38,7 @@ switch(action) {
 
 //*   FUNCTIONS
 function concertThis(value) {
+   logthis()
    axios.get("https://rest.bandsintown.com/artists/" + value + "/events?app_id=codingbootcamp")
       .then(function (response) {
          var venueName = response.data[0].venue.name
@@ -55,6 +56,7 @@ function concertThis(value) {
 }
 
 function spotifyThisSong(value) {
+   logthis()
    if (!value) {
       console.log('***No song entered so we chose one for you');
 
@@ -124,6 +126,7 @@ function movieThis(value) {
 }
 
 function doWhatItSays(value) {
+   logthis()
    fs.readFile("random.txt", "utf8", function (error, data) {
       // Catch any errors
       if (error) {
