@@ -130,9 +130,9 @@ function doWhatItSays(value) {
          return console.log(error);
       }
 
-      console.log(data);
+      // console.log(data);
       var dataArr = data.split(",");
-      console.log(dataArr);
+      // console.log(dataArr);
       // grab action and value from array
       var action = dataArr[0];
       var value = dataArr[1];
