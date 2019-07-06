@@ -12,6 +12,10 @@ Liri is connected to various APIs to allow it to grab relevant data pertaining t
 
 ## Instructions
 
+You must create a api key from Spotify and place it in a file called **.env** with the content shown below;
+`SPOTIFY_ID=your_spotify_id
+SPOTIFY_SECRET=your_secret_key`
+
 ### Liri understand the following commands
 
 1. **concert-this** *artist/band name here*
@@ -21,7 +25,13 @@ Liri is connected to various APIs to allow it to grab relevant data pertaining t
 
 ## Screenshots
 
-![Alt Text](url)
+![Concert This](https://i.imgur.com/a7apWTb.png)
+
+![Spotify This Song](https://i.imgur.com/g4Xi0FH.png)
+
+![Movie This](https://i.imgur.com/JbjwNSy.png)
+
+![Do What It Says](https://i.imgur.com/5WEbQT6.png)
 
 ## What you will need to use this app
 
