@@ -6,7 +6,7 @@ var fs = require("fs")
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 var action = process.argv[2];
-var value = process.argv[3];
+var value = process.argv.slice(3).join(" ");
 
 // Check typed action against cases, if matched direct to proper function, else console log an error
 switch(action) {
